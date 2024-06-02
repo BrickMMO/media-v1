@@ -8,42 +8,41 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
-        <div class="container-fluid justify-content-between">
-            <?php echo '<img src="assets/brickmmo.png" style="max-width: 50px; height: auto;">'; ?>
-            <a href="#" class="p text-decoration-none" style="color: orange;">BrickMMO</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <ul class="navbar-nav">
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
+    <div class="container-fluid justify-content-between">
+        <?php echo '<img src="assets/brickmmo.png" style="max-width: 50px; height: auto;">'; ?>
+        <a href="#" class="p text-decoration-none" style="color: orange;">BrickMMO</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active text-decoration-none" aria-current="page" href="./index.php" style="color: orange;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-decoration-none" href="./new.php" style="color: orange;">Education</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-decoration-none" href="#" style="color: orange;">Research</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-decoration-none" href="#" style="color: orange;">Commissions</a>
+                </li>
+                <?php if(isset($_SESSION['username'])): ?>
                     <li class="nav-item">
-                        <a class="nav-link active text-decoration-none" aria-current="page" href="#" style="color: orange;">Home</a>
+                        <a class="nav-link text-decoration-none" href="logout.php" style="color: orange;">Logout</a>
                     </li>
+                <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link text-decoration-none" href="#" style="color: orange;">Education</a>
+                        <a class="nav-link text-decoration-none" href="./login.php" style="color: orange;">Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-decoration-none" href="#" style="color: orange;">Research</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-decoration-none" href="#" style="color: orange;">Commissions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-decoration-none" href="#" style="color: orange;">Login</a>
-                    </li>
-                </ul>
-
-            </div>
+                <?php endif; ?>
+            </ul>
         </div>
-    </nav>
-    <div class="main">
-
-        <form class="d-flex ms-lg-2 w-60 " role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
     </div>
+</nav>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

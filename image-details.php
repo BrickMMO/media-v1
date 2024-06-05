@@ -12,14 +12,16 @@
     <div class="container-fluid">
         <div class="row no-gutters">
             <?php
-            // Database connection
+            // Database connection details
             $dbHost = 'localhost';
             $dbUsername = 'root';
             $dbPassword = 'root';
             $dbName = 'brickmmo';
 
+            // Create a new database connection
             $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
 
+            // Check if the connection is successful
             if ($db->connect_error) {
                 die("Connection failed: " . $db->connect_error);
             }
@@ -27,26 +29,43 @@
             // Fetch image details based on ID
             if (isset($_GET['id'])) {
                 $id = $_GET['id'];
-                $sql = $db->prepare("SELECT imageName, image FROM images WHERE id = ?");
+                $sql = $db->prepare("SELECT imageName, image, tags FROM images WHERE id = ?");
                 $sql->bind_param("i", $id);
                 $sql->execute();
                 $result = $sql->get_result();
 
+                // If there are results
                 if ($result->num_rows > 0) {
+                    // Fetch the row
                     $row = $result->fetch_assoc();
+
+                    // Get image details
                     $imageName = $row["imageName"];
-                    // Remove file extension from image name
-                    $imageName = pathinfo($imageName, PATHINFO_FILENAME);
                     $imageData = $row["image"];
-                    $imageDataEncoded = base64_encode($imageData);
-                    $imageSrc = 'data:image/jpeg;base64,' . $imageDataEncoded;
+                    $imagePath = 'data:image/jpeg;base64,' . base64_encode($imageData);
+                    $tags = $row["tags"];
+
+                    // Get image dimensions and type
+                    $tempImagePath = tempnam(sys_get_temp_dir(), 'img');
+                    file_put_contents($tempImagePath, $imageData);
+                    $imageSize = getimagesize($tempImagePath);
+                    unlink($tempImagePath);
+
+                    $width = $imageSize[0];
+                    $height = $imageSize[1];
+                    $mimeType = $imageSize['mime'];
+
+                    // Display image details
                     echo '
                     <div class="col-md-8 d-flex justify-content-center align-items-center" style="height: 100vh; overflow: hidden;">
-                        <img src="' . $imageSrc . '" class="img-fluid" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="...">
+                        <img src="' . $imagePath . '" class="img-fluid" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="...">
                     </div>
                     <div class="col-md-4 p-4" style="height: 100vh; overflow-y: auto;">
                         <h2>' . $imageName . '</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p>Tags: ' . htmlspecialchars($tags) . '</p>
+                        <p>Dimensions: ' . $width . ' x ' . $height . '</p>
+                        <p>File Type: ' . $mimeType . '</p>
+                        <a href="download.php?id=' . $id . '" class="btn btn-primary">Download</a>
                     </div>
                     ';
                 } else {

@@ -67,12 +67,14 @@ if (isset($_POST["submit"])) {
 
     <div class="container mt-5">
         <div class="text-center">
+            <!-- Welcome message -->
             <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
             <p>Your email: <?php echo htmlspecialchars($_SESSION['email']); ?></p>
         </div>
 
         <div class="row justify-content-center mt-4">
             <div class="col-md-6">
+                <!-- Form for uploading images -->
                 <form action="upload.php" method="post" enctype="multipart/form-data" class="border p-4 rounded">
                     <div class="mb-3">
                         <label for="image" class="form-label">Select images to upload:</label>
@@ -82,6 +84,7 @@ if (isset($_POST["submit"])) {
                         <input type="submit" name="submit" value="UPLOAD" class="btn btn-primary">
                     </div>
                 </form>
+                <!-- Display upload message -->
                 <?php if (isset($uploadMessage)) {
                     echo "<div class='alert alert-info mt-3'>$uploadMessage</div>";
                 } ?>
@@ -91,6 +94,7 @@ if (isset($_POST["submit"])) {
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
                 <h3 class="mb-4">Uploaded Images</h3>
+                <!-- Display uploaded images -->
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <?php
                     // Fetch uploaded images from database
@@ -124,8 +128,9 @@ if (isset($_POST["submit"])) {
                                     <div class="card-body">
                                         <h5 class="card-title">' . $imageName . '</h5>
                                         <div class="d-grid gap-2">
-                                            <a href="edit.php?id=' . $imageId . '" class="btn btn-primary">Edit</a>
-                                            <a href="delete.php?id=' . $imageId . '" class="btn btn-danger">Delete</a>
+                                            <!-- Edit and delete buttons -->
+                                            <a href="admin-edit.php?id=' . $imageId . '" class="btn btn-primary">Edit</a>
+                                            <a href="admin-delete.php?id=' . $imageId . '" class="btn btn-danger">Delete</a>
                                         </div>
                                     </div>
                                 </div>

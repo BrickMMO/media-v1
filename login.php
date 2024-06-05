@@ -1,8 +1,11 @@
 <?php
+// Start session to ensure session continuity
 session_start();
 
+// Include the navigation bar
 include("navbar.php");
 
+// Database connection details
 $host = 'localhost';
 $dbname = 'brickmmo';
 $username = 'root';
@@ -13,10 +16,13 @@ $conn = new mysqli($host, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
+    // If connection fails, display error message and terminate script
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Retrieve form data
     $user = $_POST['username'];
     $email = $_POST['email'];
     $pass = $_POST['password'];
@@ -27,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $stmt->store_result();
 
+    // If user credentials are valid
     if ($stmt->num_rows > 0) {
         $stmt->bind_result($username, $email);
         $stmt->fetch();
@@ -39,14 +46,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         setcookie("username", $username, time() + 3600, "/");
         setcookie("email", $email, time() + 3600, "/");
 
+        // Redirect user to the dashboard
         header("Location: dashboard.php");
         exit();
     } else {
+        // If user credentials are invalid, set error message
         $error = "Invalid username, email, or password!";
     }
 
+    // Close statement
     $stmt->close();
 }
+
+// Close connection
 $conn->close();
 ?>
 
@@ -61,6 +73,7 @@ $conn->close();
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <h2 class="my-4 text-center">Login Page</h2>
+                <!-- Display error message if exists -->
                 <?php if (isset($error)) { echo "<div class='alert alert-danger' role='alert'>$error</div>"; } ?>
                 <form method="POST" action="login.php">
                     <div class="mb-3">

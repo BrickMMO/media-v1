@@ -1,3 +1,8 @@
+<?php
+// Start session to ensure session continuity
+session_start();
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -30,10 +35,15 @@
                     <a class="nav-link text-decoration-none" href="#" style="color: orange;">Commissions</a>
                 </li>
                 <?php if(isset($_SESSION['username'])): ?>
+                    <!-- If user is logged in, display username and logout link -->
+                    <li class="nav-item">
+                        <a class="nav-link text-decoration-none" href="dashboard.php" style="color: orange;">Welcome <?php echo $_SESSION['username']; ?></a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-decoration-none" href="logout.php" style="color: orange;">Logout</a>
                     </li>
                 <?php else: ?>
+                    <!-- If user is not logged in, display login link -->
                     <li class="nav-item">
                         <a class="nav-link text-decoration-none" href="./login.php" style="color: orange;">Login</a>
                     </li>

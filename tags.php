@@ -1,6 +1,6 @@
 <!-- Tags Section -->
 <div class="col-md-3">
-    <h5>Tags</h5>
+    <h5 class="text-dark mb-3">Tags</h5>
     <div class="d-flex flex-wrap">
         <?php
         // Database connection details
@@ -48,7 +48,7 @@
         foreach ($tags as $tag) {
             if (!empty($tag)) {
                 // Generate link with tag as a parameter
-                echo '<a href="?tag=' . urlencode($tag) . '" class="btn btn-outline-secondary m-1">' . htmlspecialchars($tag) . '</a>';
+                echo '<a href="?tag=' . urlencode($tag) . '" class="btn btn-outline-secondary m-1 text-dark border">' . htmlspecialchars($tag) . '</a>';
             }
         }
         ?>

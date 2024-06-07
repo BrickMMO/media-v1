@@ -97,7 +97,7 @@ if (isset($_POST["submit"])) {
                 <!-- Display uploaded images -->
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <?php
-                    // Fetch uploaded images from database
+                    // Fetch uploaded images and download counts from database
                     $dbHost = 'localhost';
                     $dbUsername = 'root';
                     $dbPassword = 'root';
@@ -111,7 +111,10 @@ if (isset($_POST["submit"])) {
                         die("Connection failed: " . $db->connect_error);
                     }
 
-                    $sql = "SELECT id, imageName, image FROM images";
+                    // SQL query to get images and download counts
+                    $sql = "SELECT images.id, images.imageName, images.image, IFNULL(downloads.download_count, 0) as downloadCount 
+                            FROM images 
+                            LEFT JOIN downloads ON images.id = downloads.image_id";
                     $result = $db->query($sql);
 
                     if ($result->num_rows > 0) {
@@ -119,6 +122,7 @@ if (isset($_POST["submit"])) {
                             $imageId = $row["id"];
                             $imageName = $row["imageName"];
                             $imageData = $row["image"];
+                            $downloadCount = $row["downloadCount"];
                             $imageDataEncoded = base64_encode($imageData);
                             $imageSrc = 'data:image/jpeg;base64,' . $imageDataEncoded;
                             echo '
@@ -127,6 +131,7 @@ if (isset($_POST["submit"])) {
                                     <img src="' . $imageSrc . '" class="card-img-top" style="height: 200px; object-fit: cover;" alt="' . $imageName . '">
                                     <div class="card-body">
                                         <h5 class="card-title">' . $imageName . '</h5>
+                                        <p class="card-text">Downloads: ' . $downloadCount . '</p>
                                         <div class="d-grid gap-2">
                                             <!-- Edit and delete buttons -->
                                             <a href="admin-edit.php?id=' . $imageId . '" class="btn btn-primary">Edit</a>

@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
     if ($result->num_rows > 0) {
         // Fetch the row
         $row = $result->fetch_assoc();
-        
+
         // Get the image data and name
         $imageData = $row['image'];
         $imageName = $row['imageName'];
@@ -44,7 +44,13 @@ if (isset($_GET['id'])) {
 
         // Output the image data to the browser
         echo $imageData;
-        
+
+        // Update download count in the downloads table
+        $updateDownload = $db->prepare("INSERT INTO downloads (image_id, download_count) VALUES (?, 1)
+                                        ON DUPLICATE KEY UPDATE download_count = download_count + 1");
+        $updateDownload->bind_param("i", $id);
+        $updateDownload->execute();
+
         // Exit to prevent further output
         exit;
     } else {
@@ -58,4 +64,3 @@ if (isset($_GET['id'])) {
     // If no image ID is provided in the URL, display a message
     echo "No image ID provided.";
 }
-?>

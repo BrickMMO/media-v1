@@ -13,7 +13,7 @@ session_start();
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow sticky-top">
     <div class="container-fluid justify-content-between">
         <?php echo '<img src="assets/brickmmo.png" style="max-width: 50px; height: auto;">'; ?>
         <a href="#" class="p text-decoration-none" style="color: orange;">BrickMMO</a>
@@ -35,7 +35,6 @@ session_start();
                     <a class="nav-link text-decoration-none" href="#" style="color: orange;">Commissions</a>
                 </li>
                 <?php if(isset($_SESSION['username'])): ?>
-                    <!-- If user is logged in, display username and logout link -->
                     <li class="nav-item">
                         <a class="nav-link text-decoration-none" href="dashboard.php" style="color: orange;">Welcome <?php echo $_SESSION['username']; ?></a>
                     </li>
@@ -43,7 +42,6 @@ session_start();
                         <a class="nav-link text-decoration-none" href="logout.php" style="color: orange;">Logout</a>
                     </li>
                 <?php else: ?>
-                    <!-- If user is not logged in, display login link -->
                     <li class="nav-item">
                         <a class="nav-link text-decoration-none" href="./login.php" style="color: orange;">Login</a>
                     </li>
@@ -52,6 +50,7 @@ session_start();
         </div>
     </div>
 </nav>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

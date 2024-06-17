@@ -16,21 +16,14 @@ if (!isset($_GET['id'])) {
 // Get image ID from URL parameter
 $imageId = $_GET['id'];
 
-// Include database connection
-$dbHost = 'localhost';
-$dbUsername = 'root';
-$dbPassword = 'root';
-$dbName = 'brickmmo';
 
-// Create database connection
+include("database.php");
 $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-
-// Check connection
 if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 
-// Fetch image details based on ID
+// Fetching image details 
 $sql = $db->prepare("SELECT imageName, image FROM images WHERE id = ?");
 $sql->bind_param("i", $imageId);
 $sql->execute();
@@ -48,7 +41,7 @@ if ($result->num_rows > 0) {
 
 $sql->close();
 
-// Handle image deletion
+// Image Deletion
 if (isset($_POST['delete'])) {
     // Delete image from database
     $deleteSql = $db->prepare("DELETE FROM images WHERE id = ?");
@@ -72,7 +65,6 @@ $db->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Image</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
 </head>
 
 <body>
@@ -85,12 +77,10 @@ $db->close();
                         <h5 class="card-title">Delete Image</h5>
                         <p class="card-text">Are you sure you want to delete this image?</p>
                         <img src="<?php echo $imagePath; ?>" class="img-fluid mb-3" alt="<?php echo $imageName; ?>">
-                        <!-- Form to handle image deletion -->
+                        <!-- Form for Image Deletion -->
                         <form method="post" action="">
                             <div class="d-grid gap-2">
-                                <!-- Button to confirm deletion -->
                                 <button type="submit" name="delete" class="btn btn-danger">Yes, delete it</button>
-                                <!-- Button to cancel deletion and return to dashboard -->
                                 <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
                             </div>
                         </form>

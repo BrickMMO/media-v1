@@ -1,20 +1,17 @@
 <?php
 session_start();
 
-// Check if user is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Check if image ID is provided
 if (!isset($_GET['id'])) {
     header("Location: dashboard.php");
     exit();
 }
 
-// Get image ID from URL parameter
-$imageId = $_GET['id'];
+$videoId = $_GET['id'];
 
 
 include("database.php");
@@ -23,33 +20,30 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 
-// Fetching image details 
-$sql = $db->prepare("SELECT imageName, image FROM images WHERE id = ?");
-$sql->bind_param("i", $imageId);
+// Fetch video details based on ID
+$sql = $db->prepare("SELECT videoName, videoPath FROM videos WHERE id = ?");
+$sql->bind_param("i", $videoId);
 $sql->execute();
 $result = $sql->get_result();
 
-$imageName = "";
-$imagePath = "";
+$videoName = "";
+$videoPath = "";
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $imageName = $row["imageName"];
-    $imageData = $row["image"];
-    $imagePath = 'data:image/jpeg;base64,' . base64_encode($imageData);
+    $videoName = $row["videoName"];
+    $videoPath = $row["videoPath"];
 }
 
 $sql->close();
 
-// Image Deletion
+// Video Deletion
 if (isset($_POST['delete'])) {
-    // Delete image from database
-    $deleteSql = $db->prepare("DELETE FROM images WHERE id = ?");
-    $deleteSql->bind_param("i", $imageId);
+    // Delete video from database
+    $deleteSql = $db->prepare("DELETE FROM videos WHERE id = ?");
+    $deleteSql->bind_param("i", $videoId);
     $deleteSql->execute();
     $deleteSql->close();
-
-    // Redirect to dashboard after deletion
     header("Location: dashboard.php");
     exit();
 }
@@ -63,7 +57,7 @@ $db->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Image</title>
+    <title>Delete Video</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
@@ -74,10 +68,12 @@ $db->close();
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Delete Image</h5>
-                        <p class="card-text">Are you sure you want to delete this image?</p>
-                        <img src="<?php echo $imagePath; ?>" class="img-fluid mb-3" alt="<?php echo $imageName; ?>">
-                        <!-- Form for Image Deletion -->
+                        <h5 class="card-title">Delete Video</h5>
+                        <p class="card-text">Are you sure you want to delete this video?</p>
+                        <h6><?php echo htmlspecialchars($videoName); ?></h6>
+                        <div class="embed-responsive embed-responsive-16by9 mb-3">
+                            <iframe class="embed-responsive-item" src="<?php echo htmlspecialchars($videoPath); ?>" allowfullscreen></iframe>
+                        </div>
                         <form method="post" action="">
                             <div class="d-grid gap-2">
                                 <button type="submit" name="delete" class="btn btn-danger">Yes, delete it</button>

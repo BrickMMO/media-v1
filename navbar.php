@@ -1,5 +1,4 @@
 <?php
-// Start session to ensure session continuity
 session_start();
 ?>
 
@@ -15,7 +14,7 @@ session_start();
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary shadow sticky-top">
     <div class="container-fluid justify-content-between">
-        <?php echo '<img src="assets/brickmmo.png" style="max-width: 50px; height: auto;">'; ?>
+        <?php echo '<img src="brickmmo.png" style="max-width: 50px; height: auto;">'; ?>
         <a href="#" class="p text-decoration-none" style="color: orange;">BrickMMO</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,17 +22,9 @@ session_start();
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active text-decoration-none" aria-current="page" href="./index.php" style="color: orange;">Home</a>
+                    <a class="nav-link active text-decoration-none" aria-current="page" href="index.php" style="color: orange;">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-decoration-none" href="./new.php" style="color: orange;">Education</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-decoration-none" href="#" style="color: orange;">Research</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-decoration-none" href="#" style="color: orange;">Commissions</a>
-                </li>
+                
                 <?php if(isset($_SESSION['username'])): ?>
                     <li class="nav-item">
                         <a class="nav-link text-decoration-none" href="dashboard.php" style="color: orange;">Welcome <?php echo $_SESSION['username']; ?></a>
@@ -43,7 +34,7 @@ session_start();
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link text-decoration-none" href="./login.php" style="color: orange;">Login</a>
+                        <a class="nav-link text-decoration-none" href="login.php" style="color: orange;">Login</a>
                     </li>
                 <?php endif; ?>
             </ul>
